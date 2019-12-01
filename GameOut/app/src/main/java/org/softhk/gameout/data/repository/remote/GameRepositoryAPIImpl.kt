@@ -28,7 +28,7 @@ class GameRepositoryAPIImpl @Inject constructor(
             }
 
             override fun onResponse(call: Call<GameResponse>, response: Response<GameResponse>) {
-               if(response.body()!!){
+               if(response.body()!!.results != null){
                    _listOfGames.value = response.body()!!.results
                }
             }
