@@ -1,5 +1,7 @@
 # GameOut
 
+### This project is about to consume an REST API
+
 ## Features
 - MVVM
 - LiveData
