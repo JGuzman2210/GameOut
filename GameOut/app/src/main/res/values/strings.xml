@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">GameOut</string>
+    <string name="text_to_show">Text to show</string>
+
+    <string name="open_nav_toggle">Open</string>
+    <string name="close_nav_toggle">Close</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Variables of SharedPreferences -->
+    <string name="item_to_recycerview">ITEM_SHOW</string>
+    <string name="name_settings">Settings</string>
+
+
+</resources>

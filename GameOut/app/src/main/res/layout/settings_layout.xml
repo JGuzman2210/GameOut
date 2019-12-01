@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="280dp"
+    android:layout_height="250dp"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_settings" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Display1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:text="@string/name_settings"
+                android:textAlignment="center"
+                android:textColor="@color/textColorWhite" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Element to Show:"
+            android:textColor="@color/textColorWhite"
+            android:textSize="15sp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:spinnerMode="dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Layout Manager:"
+            android:textColor="@color/textColorWhite"
+            android:textSize="15sp" />
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+               <RadioButton
+                   android:id="@+id/linear_layout_radio"
+                   android:text="Linear"
+                   android:textColor="@color/textColorWhite"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:checked="true"/>
+               <RadioButton
+                   android:id="@+id/grid_layout_radio"
+                   android:text="Grid"
+                   android:textColor="@color/textColorWhite"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="20dp"/>
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/saveSettingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/CancelSettingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Close" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
