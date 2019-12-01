@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gamesFragment"
-        android:name="org.softhk.gameout.game.GamesFragment"
+        android:name="org.softhk.gameout.ui.game.GamesFragment"
         android:label="fragment_games"
         tools:layout="@layout/fragment_games" >
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameDetailFragment"
-        android:name="org.softhk.gameout.gamedetails.GameDetailFragment"
+        android:name="org.softhk.gameout.ui.gamedetails.GameDetailFragment"
         android:label="fragment_game_detail"
         tools:layout="@layout/fragment_game_detail" />
 </navigation>

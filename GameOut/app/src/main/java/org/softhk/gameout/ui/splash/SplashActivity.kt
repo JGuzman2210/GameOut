@@ -7,7 +7,7 @@ import android.os.Handler
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import org.softhk.gameout.ui.GameActivity
+import org.softhk.gameout.ui.container.GameActivity
 import org.softhk.gameout.R
 
 class SplashActivity : AppCompatActivity() {
