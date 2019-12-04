@@ -45,10 +45,6 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
     private lateinit var cancelSettingsButtonDialog:Button
     private lateinit var saveSettingsButtonDialog:Button
 
-    fun addFrament(fragment: Fragment) {
-        this.fragment = fragment
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gameout)
@@ -90,6 +86,10 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
                 saveSettingDialog()
             }
         }
+    }
+
+    fun addFrament(fragment: Fragment) {
+        this.fragment = fragment
     }
 
     fun setUpDrawer() {
@@ -223,9 +223,6 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
             dialog.show()
         }
     }
-
-
-
 }
 
 

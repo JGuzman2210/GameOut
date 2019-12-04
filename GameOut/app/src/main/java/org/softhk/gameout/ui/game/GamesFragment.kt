@@ -1,24 +1,21 @@
 package org.softhk.gameout.ui.game
 
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import org.softhk.gameout.ui.container.GameActivity
 import org.softhk.gameout.R
-import org.softhk.gameout.di.GameOutApp
 import org.softhk.gameout.data.model.Result
-import org.softhk.gameout.data.repository.remote.GameRepositoryAPI
+import org.softhk.gameout.di.GameOutApp
+import org.softhk.gameout.ui.container.GameActivity
 import org.softhk.gameout.utils.SPKey
 import org.softhk.gameout.utils.SharedPreferencesHelper
 import javax.inject.Inject
@@ -30,10 +27,7 @@ class GamesFragment : Fragment(),
     lateinit var gameViewModelFactory: GameViewModelFactory
 
     @Inject
-    lateinit var gameRespository: GameRepositoryAPI
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
     private var gameRecyclerView: RecyclerView? = null
 
@@ -43,8 +37,6 @@ class GamesFragment : Fragment(),
 
     private lateinit var viewLayout: View
 
-    @Inject
-    lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

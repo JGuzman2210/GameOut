@@ -9,11 +9,14 @@ import org.softhk.gameout.data.model.Result
 import org.softhk.gameout.data.repository.remote.GameRepositoryAPI
 import org.softhk.gameout.utils.SPKey
 import org.softhk.gameout.utils.SharedPreferencesHelper
+import javax.inject.Inject
 
 class GameViewModel constructor(var repositoryAPI: GameRepositoryAPI, var sharedPreferences: SharedPreferencesHelper) : ViewModel() {
 
+    @Inject
+    lateinit var gameRespository: GameRepositoryAPI
 
-    private var _repositoryAPI: GameRepositoryAPI? = null
+    private lateinit var _repositoryAPI: GameRepositoryAPI
     private var _listOfGames = MutableLiveData<List<Result>>()
 
 

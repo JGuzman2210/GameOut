@@ -27,12 +27,10 @@ class GameDetailFragment : Fragment() {
 
     private lateinit var viewLayout: View
     private lateinit var gameImageView: ImageView
+
     private var gameSelected: Result? = null
     private var videoView: VideoView? = null
     private var playButtonVideo: Button? = null
-
-    @Inject
-    lateinit var gameFavoriteDAO: GameFavoriteDAO
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

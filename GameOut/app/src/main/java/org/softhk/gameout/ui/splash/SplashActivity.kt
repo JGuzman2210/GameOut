@@ -15,13 +15,13 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        var animation = AnimationUtils.loadAnimation(
+        val animation = AnimationUtils.loadAnimation(
             this,
             R.anim.customs_animate
         )
 
-        var logoImageView:ImageView = findViewById(R.id.logo_image_view)
-        var textView:TextView = findViewById(R.id.logo_text_view)
+        val logoImageView:ImageView = findViewById(R.id.logo_image_view)
+        val textView:TextView = findViewById(R.id.logo_text_view)
 
         logoImageView.animation = animation
         textView.animation = animation

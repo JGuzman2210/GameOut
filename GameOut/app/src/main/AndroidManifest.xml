@@ -7,15 +7,14 @@
     <application
         android:name=".di.GameOutApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_games_control_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_games_control_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActBar">
 
         <activity
-            android:name=".ui.splash.SplashActivity"
-            android:theme="@style/AppTheme.NoActBar">
+            android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,9 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.container.GameActivity"
-                android:theme="@style/AppTheme.NoActBar"
-            />
+        <activity android:name=".ui.container.GameActivity"/>
     </application>
 
 </manifest>

@@ -1,6 +1,5 @@
 package org.softhk.gameout.ui.game
 
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.softhk.gameout.data.repository.remote.GameRepositoryAPI
@@ -12,16 +11,16 @@ class GameViewModelFactory @Inject constructor(
     var sharedPreferences: SharedPreferencesHelper
 ) : ViewModelProvider.Factory {
 
-
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
+      return  with(modelClass) {
+            when {
+                isAssignableFrom(GameViewModel::class.java) ->
+                    GameViewModel(respositoryAPI, sharedPreferences)
 
-        var vm = GameViewModel(
-            respositoryAPI,
-            sharedPreferences
-        )
+                else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            }
 
-        return vm as T
-
+        } as T
     }
 }
