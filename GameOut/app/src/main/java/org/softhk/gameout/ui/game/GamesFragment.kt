@@ -18,8 +18,9 @@ import org.softhk.gameout.ui.container.GameActivity
 import org.softhk.gameout.R
 import org.softhk.gameout.di.GameOutApp
 import org.softhk.gameout.data.model.Result
-import org.softhk.gameout.data.repository.GameRepositoryAPI
-import org.softhk.gameout.utils.SharedPreferenceItem
+import org.softhk.gameout.data.repository.remote.GameRepositoryAPI
+import org.softhk.gameout.utils.SPKey
+import org.softhk.gameout.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class GamesFragment : Fragment(),
@@ -34,7 +35,6 @@ class GamesFragment : Fragment(),
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-
     private var gameRecyclerView: RecyclerView? = null
 
     private var gameAdapter: GamesAdapter? = null
@@ -43,11 +43,13 @@ class GamesFragment : Fragment(),
 
     private lateinit var viewLayout: View
 
+    @Inject
+    lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         viewLayout = inflater.inflate(R.layout.fragment_games, container, false)
 
 
@@ -71,43 +73,43 @@ class GamesFragment : Fragment(),
         updateData()
     }
 
-    override fun viewHolderClicked(view:View,indexItem:Int,gameSelected: Result) {
-
-
+    override fun viewHolderClicked(view: View, indexItem: Int, gameSelected: Result) {
         var bundle: Bundle = Bundle()
-        bundle.putSerializable("ResultSelected",Gson().toJson(gameSelected))
+        bundle.putParcelable("ResultSelected", gameSelected)
         findNavController().navigate(R.id.action_gamesFragment_to_gameDetailFragment, bundle)
-
 
     }
 
     private fun setUpRecyclerView() {
         gameRecyclerView = viewLayout.findViewById(R.id.gameRecyclerView)
 
-        if (sharedPreferences.contains(SharedPreferenceItem.SHARED_PREFERENCES_SHOW_LAYOUTMANAGER_RECYCLER_VIEW_KEY)) {
-
-            var layoutResult = sharedPreferences.getString(
-                SharedPreferenceItem.SHARED_PREFERENCES_SHOW_LAYOUTMANAGER_RECYCLER_VIEW_KEY,
-                SharedPreferenceItem.SHARED_PREFERENCES_LINEARLAYOUT
-            )
-            when (layoutResult) {
-                SharedPreferenceItem.SHARED_PREFERENCES_GRIDLAYOUT -> {
-                    gameRecyclerView!!.layoutManager = GridLayoutManager(activity, 2)
-                }
-                SharedPreferenceItem.SHARED_PREFERENCES_LINEARLAYOUT -> {
-                    gameRecyclerView!!.layoutManager = LinearLayoutManager(activity)
-                }
+        sharedPreferencesHelper.contains(SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW).let { result ->
+            if (result) {
+                val layoutManager = sharedPreferencesHelper
+                    .get(
+                        SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW,
+                        null
+                    ).let { layout ->
+                        with(SPKey) {
+                            when (layout) {
+                                SP_GRID_LAYOUT_RECICLER_VIEW -> {
+                                    gameRecyclerView!!.layoutManager =
+                                        GridLayoutManager(activity, 2)
+                                }
+                                SP_LINEAR_LAYOUT_RECYCLER_VIEW -> {
+                                    gameRecyclerView!!.layoutManager =
+                                        LinearLayoutManager(activity)
+                                }
+                            }
+                        }
+                    }
+            } else {
+                gameRecyclerView!!.layoutManager = LinearLayoutManager(activity)
             }
 
-        } else {
-            //Set LinearLayoutManager by Default
-            gameRecyclerView!!.layoutManager = LinearLayoutManager(activity)
+            gameAdapter = GamesAdapter(this)
+            gameRecyclerView!!.adapter = gameAdapter
         }
-
-
-
-        gameAdapter = GamesAdapter(this)
-        gameRecyclerView!!.adapter = gameAdapter
     }
 
     fun updateData() {
@@ -118,13 +120,11 @@ class GamesFragment : Fragment(),
         })
     }
 
-    fun updateLayoutManagerRecyclerView(){
+    fun updateLayoutManagerRecyclerView() {
         setUpRecyclerView()
     }
 
     private fun setInjectActivity() {
         (activity!!.applicationContext as GameOutApp).getGameOutComponent().Inject(this)
     }
-
-
 }

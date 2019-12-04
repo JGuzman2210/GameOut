@@ -1,4 +1,4 @@
-package org.softhk.gameout.data.repository
+package org.softhk.gameout.data.repository.remote
 
 
 import androidx.lifecycle.MutableLiveData

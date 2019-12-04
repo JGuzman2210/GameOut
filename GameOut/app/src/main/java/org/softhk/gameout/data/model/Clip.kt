@@ -1,8 +1,11 @@
 package org.softhk.gameout.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Clip(
     @SerializedName("clip")
     var clip: String,
@@ -12,4 +15,4 @@ data class Clip(
     var preview: String,
     @SerializedName("video")
     var video: String
-)
+):Parcelable

@@ -1,8 +1,11 @@
 package org.softhk.gameout.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class AddedByStatus(
     @SerializedName("beaten")
     var beaten: Int,
@@ -16,4 +19,4 @@ data class AddedByStatus(
     var toplay: Int,
     @SerializedName("yet")
     var yet: Int
-)
+):Parcelable

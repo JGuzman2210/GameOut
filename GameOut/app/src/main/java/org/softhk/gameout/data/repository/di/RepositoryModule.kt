@@ -5,7 +5,7 @@ import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.softhk.gameout.data.repository.GameRepositoryAPI
+import org.softhk.gameout.data.repository.remote.GameRepositoryAPI
 import org.softhk.gameout.data.repository.remote.GameRepositoryAPIImpl
 import org.softhk.gameout.data.repository.service.GameServiceAPI
 import org.softhk.gameout.utils.BASE_URL

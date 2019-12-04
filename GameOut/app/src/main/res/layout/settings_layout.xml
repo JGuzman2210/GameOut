@@ -55,6 +55,7 @@
             android:textColor="@color/textColorWhite"
             android:textSize="15sp" />
         <RadioGroup
+            android:id="@+id/radio_group_layout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

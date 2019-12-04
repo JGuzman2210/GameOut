@@ -32,6 +32,7 @@ def circleimgview_version = "3.0.1"
 def picasso_version = "2.71828"
 def material_version = "1.0.0"
 def navigation_component_version = "2.1.0"
+def room_version = "2.2.0"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -76,4 +77,9 @@ dependencies {
     //Navigation Component
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_component_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_component_version"
+
+
+    //ROOM DATABASE
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }

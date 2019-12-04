@@ -23,7 +23,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.container.GameActivity" />
+        <activity android:name=".ui.container.GameActivity"
+                android:theme="@style/AppTheme.NoActBar"
+            />
     </application>
 
 </manifest>

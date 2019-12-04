@@ -1,9 +1,13 @@
 package org.softhk.gameout.data.model
 
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class Result(
+@Parcelize
+data class Result (
     @SerializedName("added")
     var added: Int,
     @SerializedName("added_by_status")
@@ -22,10 +26,6 @@ data class Result(
     var metacritic: Int,
     @SerializedName("name")
     var name: String,
-    @SerializedName("parent_platforms")
-    var parentPlatforms: List<ParentPlatform>,
-    @SerializedName("platforms")
-    var platforms: List<PlatformX>,
     @SerializedName("playtime")
     var playtime: Int,
     @SerializedName("rating")
@@ -44,16 +44,6 @@ data class Result(
     var reviewsTextCount: Int,
     @SerializedName("saturated_color")
     var saturatedColor: String,
-    @SerializedName("short_screenshots")
-    var shortScreenshots: List<ShortScreenshot>,
     @SerializedName("slug")
-    var slug: String,
-    @SerializedName("stores")
-    var stores: List<Store>,
-    @SerializedName("suggestions_count")
-    var suggestionsCount: Int,
-    @SerializedName("tba")
-    var tba: Boolean,
-    @SerializedName("user_game")
-    var userGame: Any?
-)
+    var slug: String
+):Parcelable

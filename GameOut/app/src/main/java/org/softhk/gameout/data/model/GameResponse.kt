@@ -1,15 +1,16 @@
 package org.softhk.gameout.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class GameResponse(
     @SerializedName("count")
     var count: Int,
     @SerializedName("description")
     var description: String,
-    @SerializedName("filters")
-    var filters: Filters,
     @SerializedName("next")
     var next: String,
     @SerializedName("nofollow")
@@ -19,7 +20,7 @@ data class GameResponse(
     @SerializedName("noindex")
     var noindex: Boolean,
     @SerializedName("previous")
-    var previous: Any?,
+    var previous: String?,
     @SerializedName("results")
     var results: List<Result>,
     @SerializedName("seo_description")
@@ -30,4 +31,4 @@ data class GameResponse(
     var seoKeywords: String,
     @SerializedName("seo_title")
     var seoTitle: String
-)
+):Parcelable

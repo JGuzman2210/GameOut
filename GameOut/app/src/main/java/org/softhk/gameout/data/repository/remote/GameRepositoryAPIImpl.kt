@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import org.softhk.gameout.data.model.GameResponse
 import org.softhk.gameout.data.model.Result
-import org.softhk.gameout.data.repository.GameRepositoryAPI
 import org.softhk.gameout.data.repository.service.GameServiceAPI
 import org.softhk.gameout.utils.GET_DATA
 import retrofit2.Call
