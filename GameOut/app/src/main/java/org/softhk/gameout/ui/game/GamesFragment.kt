@@ -16,8 +16,8 @@ import org.softhk.gameout.R
 import org.softhk.gameout.data.model.Result
 import org.softhk.gameout.di.GameOutApp
 import org.softhk.gameout.ui.container.GameActivity
+import org.softhk.gameout.utils.LayOutManagerSeleted
 import org.softhk.gameout.utils.SPKey
-import org.softhk.gameout.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
 class GamesFragment : Fragment(),
@@ -26,14 +26,11 @@ class GamesFragment : Fragment(),
     @Inject
     lateinit var gameViewModelFactory: GameViewModelFactory
 
-    @Inject
-    lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+    private lateinit var gameRecyclerView: RecyclerView
 
-    private var gameRecyclerView: RecyclerView? = null
+    private lateinit var gameAdapter: GamesAdapter
 
-    private var gameAdapter: GamesAdapter? = null
-
-    private var gameViewModel: GameViewModel? = null
+    private lateinit var gameViewModel: GameViewModel
 
     private lateinit var viewLayout: View
 
@@ -69,46 +66,30 @@ class GamesFragment : Fragment(),
         var bundle: Bundle = Bundle()
         bundle.putParcelable("ResultSelected", gameSelected)
         findNavController().navigate(R.id.action_gamesFragment_to_gameDetailFragment, bundle)
-
     }
 
     private fun setUpRecyclerView() {
         gameRecyclerView = viewLayout.findViewById(R.id.gameRecyclerView)
 
-        sharedPreferencesHelper.contains(SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW).let { result ->
-            if (result) {
-                val layoutManager = sharedPreferencesHelper
-                    .get(
-                        SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW,
-                        null
-                    ).let { layout ->
-                        with(SPKey) {
-                            when (layout) {
-                                SP_GRID_LAYOUT_RECICLER_VIEW -> {
-                                    gameRecyclerView!!.layoutManager =
-                                        GridLayoutManager(activity, 2)
-                                }
-                                SP_LINEAR_LAYOUT_RECYCLER_VIEW -> {
-                                    gameRecyclerView!!.layoutManager =
-                                        LinearLayoutManager(activity)
-                                }
-                            }
-                        }
-                    }
-            } else {
-                gameRecyclerView!!.layoutManager = LinearLayoutManager(activity)
-            }
+        when (gameViewModel.loadLayoutConfigurationToRecyclerView()) {
 
-            gameAdapter = GamesAdapter(this)
-            gameRecyclerView!!.adapter = gameAdapter
+            LayOutManagerSeleted.LINEAR_LAYOUT -> {
+               gameRecyclerView.layoutManager = LinearLayoutManager(activity)
+            }
+            LayOutManagerSeleted.GRID_LAYOUT -> {
+                gameRecyclerView.layoutManager = GridLayoutManager(activity,SPKey.SP_DEFAULT_COLUM_GRID_LAYOUT_MANAGER)
+            }
         }
+
+        gameAdapter = GamesAdapter(this)
+        gameRecyclerView.adapter = gameAdapter
     }
 
     fun updateData() {
-        gameViewModel!!.getGamesAPI()
+        gameViewModel.getGamesAPI()
 
-        gameViewModel!!.getGameLiveData().observe(this, Observer {
-            gameAdapter!!.setGamesList(it)
+        gameViewModel.getGameLiveData().observe(this, Observer {
+            gameAdapter.setGamesList(it)
         })
     }
 

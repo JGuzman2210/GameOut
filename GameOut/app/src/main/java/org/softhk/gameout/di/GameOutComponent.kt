@@ -4,6 +4,7 @@ import dagger.Component
 import org.softhk.gameout.data.repository.di.RepositoryModule
 import org.softhk.gameout.data.repository.local.datasource.di.DataSouceModule
 import org.softhk.gameout.ui.container.GameActivity
+import org.softhk.gameout.ui.container.di.GameActivityModule
 import org.softhk.gameout.ui.game.GamesFragment
 import org.softhk.gameout.ui.game.di.GameModule
 import org.softhk.gameout.ui.gamedetails.GameDetailFragment
@@ -16,7 +17,8 @@ import javax.inject.Singleton
     RepositoryModule::class,
     GameModule::class,
     DataSouceModule::class,
-    UtilsModule::class])
+    UtilsModule::class,
+    GameActivityModule::class])
 interface GameOutComponent {
 
     fun inject(gameActivity: GameActivity)

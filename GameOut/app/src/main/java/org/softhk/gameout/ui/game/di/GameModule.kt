@@ -12,7 +12,7 @@ class GameModule {
 
     @Singleton
     @Provides
-    fun providergetViewModelFactory(respositoryAPI: GameRepositoryAPI, sharedPreferences: SharedPreferencesHelper):GameViewModelFactory{
+    fun providergetGameViewModelFactory(respositoryAPI: GameRepositoryAPI, sharedPreferences: SharedPreferencesHelper):GameViewModelFactory{
         return GameViewModelFactory(respositoryAPI,sharedPreferences)
     }
 }

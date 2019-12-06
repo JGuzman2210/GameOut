@@ -4,30 +4,27 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Spinner
-import android.widget.Button
-import android.widget.Toast
-import android.widget.RadioGroup
-import android.widget.RadioButton
-import android.widget.ArrayAdapter
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
 import org.softhk.gameout.R
 import org.softhk.gameout.di.GameOutApp
 import org.softhk.gameout.ui.game.GamesFragment
+import org.softhk.gameout.utils.LayOutManagerSeleted
 import org.softhk.gameout.utils.SPKey
-import org.softhk.gameout.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
-class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
+class GameActivity : AppCompatActivity(), View.OnClickListener,
+    NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
-    lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-
+    lateinit var gameActivityViewModelFactory: GameActivityViewModelFactory
+    lateinit var gameActivityViewModel: GameActivityViewModel
 
     private var fragment: Fragment? = null
 
@@ -40,50 +37,57 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
     private lateinit var spinner: Spinner
     private lateinit var adapter: ArrayAdapter<Int>
     private lateinit var radioGroupLayoutManager: RadioGroup
-    private lateinit var radioButtonLinearLayout:RadioButton
-    private lateinit var radioButtonGridLayout:RadioButton
-    private lateinit var cancelSettingsButtonDialog:Button
-    private lateinit var saveSettingsButtonDialog:Button
+    private lateinit var radioButtonLinearLayout: RadioButton
+    private lateinit var radioButtonGridLayout: RadioButton
+    private lateinit var cancelSettingsButtonDialog: Button
+    private lateinit var saveSettingsButtonDialog: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_gameout)
 
         setInjectActivity()
 
+        setUpViewModel()
+
         setUpDrawer()
+
+        setUpSettingsDialog()
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        var get:Boolean = false
 
         when (menuItem.itemId) {
             R.id.mhome -> {
                 Toast.makeText(applicationContext, "HOME", Toast.LENGTH_LONG).show()
-                drawerLayout.closeDrawers()
-                get = true
             }
             R.id.msettings -> {
-                loadDialog()
-                drawerLayout.closeDrawers()
-                get = true
+                openSettingDialog()
             }
             R.id.mprofile -> {
-                Toast.makeText(applicationContext, "Profiles", Toast.LENGTH_LONG).show()
-                drawerLayout.closeDrawers()
-                get = true
+                Toast.makeText(applicationContext, "Profile", Toast.LENGTH_LONG).show()
             }
         }
-        return get
+
+        drawerLayout.closeDrawers()
+        return true
     }
 
     override fun onClick(v: View?) {
-        when(v!!.id){
-            R.id.CancelSettingsButton ->{
+        when (v!!.id) {
+            R.id.CancelSettingsButton -> {
                 closeSettingDialog()
             }
-            R.id.saveSettingsButton ->{
+            R.id.saveSettingsButton -> {
                 saveSettingDialog()
+                updateUI()
+                closeSettingDialog()
+                Toast.makeText(
+                    this,
+                    "The configurations has been saved successfully",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -92,7 +96,21 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
         this.fragment = fragment
     }
 
-    fun setUpDrawer() {
+    private fun setInjectActivity() {
+        (application as GameOutApp).getGameOutComponent().inject(this)
+    }
+
+    private fun updateUI() {
+        (fragment as GamesFragment).updateData()
+        (fragment as GamesFragment).updateLayoutManagerRecyclerView()
+    }
+
+    private fun setUpViewModel() {
+        gameActivityViewModel = ViewModelProviders.of(this, gameActivityViewModelFactory)
+            .get(GameActivityViewModel::class.java)
+    }
+
+    private fun setUpDrawer() {
 
         toolbar = findViewById(R.id.game_toolbar)
         setSupportActionBar(toolbar)
@@ -113,7 +131,7 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
 
     }
 
-    private fun loadDialog() {
+    private fun setUpSettingsDialog() {
         dialog = Dialog(this)
         dialog.setContentView(R.layout.settings_layout)
 
@@ -124,6 +142,7 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
         saveSettingsButtonDialog.setOnClickListener(this)
 
         spinner = dialog.findViewById<Spinner>(R.id.spinner)
+
         adapter = ArrayAdapter<Int>(
             this, android.R.layout.simple_spinner_item,
             SPKey.listOfItemToShowRecyclerView
@@ -134,93 +153,51 @@ class GameActivity : AppCompatActivity(),View.OnClickListener,NavigationView.OnN
         radioButtonLinearLayout = dialog.findViewById<RadioButton>(R.id.linear_layout_radio)
         radioButtonGridLayout = dialog.findViewById<RadioButton>(R.id.grid_layout_radio)
 
+    }
+
+    private fun loadDefaultValueToSettingDialog() {
+        //Load Spinner Selected item
+        val positionSpinner = gameActivityViewModel.loadValueToSpinnerSettingInDialogView()
+        spinner.setSelection(positionSpinner)
+
+        when (gameActivityViewModel.loadSelectedLayOutManagerSettingInDialog()) {
+
+            LayOutManagerSeleted.LINEAR_LAYOUT -> {
+                radioButtonLinearLayout.isChecked = true
+            }
+            LayOutManagerSeleted.GRID_LAYOUT -> {
+                radioButtonGridLayout.isChecked = true
+            }
+        }
+    }
+
+    private fun openSettingDialog() {
         loadDefaultValueToSettingDialog()
+        dialog.show()
     }
 
-    private fun updateUI(){
-        (fragment as GamesFragment).updateData()
-        (fragment as GamesFragment).updateLayoutManagerRecyclerView()
-    }
-
-    private fun setInjectActivity() {
-        (application as GameOutApp).getGameOutComponent().inject(this)
-    }
-
-    fun closeSettingDialog(){
+    private fun closeSettingDialog() {
         dialog.dismiss()
     }
 
-    fun saveSettingDialog(){
+    private fun saveSettingDialog() {
 
         var spinnerItem: Int = spinner.selectedItem as Int
         var spinnerCurrenPosition: Int = spinner.selectedItemId.toInt()
 
-        sharedPreferencesHelper.put(SPKey.SP_ELEMENT_SHOW_RECYCLER_VIEW, spinnerItem)
-        sharedPreferencesHelper.put(SPKey.SP_SPINNER_POSITION, spinnerCurrenPosition)
+        gameActivityViewModel.saveSettingSpinnerValue(
+            spinnerItem = spinnerItem,
+            spinnerPosition = spinnerCurrenPosition
+        )
 
         //Validate LayOutManager
         when (radioGroupLayoutManager.checkedRadioButtonId) {
-            R.id.linear_layout_radio -> {
-                sharedPreferencesHelper.put(
-                    SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW,
-                    SPKey.SP_LINEAR_LAYOUT_RECYCLER_VIEW
-                )
-            }
-            R.id.grid_layout_radio -> {
-                sharedPreferencesHelper.put(
-                    SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW,
-                    SPKey.SP_GRID_LAYOUT_RECICLER_VIEW
-                )
-            }
-        }
+            R.id.linear_layout_radio ->
+                gameActivityViewModel.saveSettingRecyclerLayOutManager(SPKey.SP_LINEAR_LAYOUT_RECYCLER_VIEW)
 
-        updateUI()
-        closeSettingDialog()
+            R.id.grid_layout_radio ->
+                gameActivityViewModel.saveSettingRecyclerLayOutManager(SPKey.SP_GRID_LAYOUT_RECICLER_VIEW)
 
-        Toast.makeText(
-            this,
-            "The configurations has been saved successfully",
-            Toast.LENGTH_LONG
-        ).show()
-
-    }
-
-    fun loadDefaultValueToSettingDialog(){
-        //Load Spinner Selected item
-        sharedPreferencesHelper.contains(SPKey.SP_SPINNER_POSITION).let {
-            if (it) {
-                var positionSpinner: Int = sharedPreferencesHelper.get(SPKey.SP_SPINNER_POSITION, 0)
-                spinner.setSelection(positionSpinner)
-            }
-        }
-
-
-        //Load Radio Button seleted item
-        sharedPreferencesHelper.contains(SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW).let { result ->
-            if (result) {
-                val layoutManager = sharedPreferencesHelper
-                    .get(
-                        SPKey.SP_LAYOUTMANAGER_RECYCLER_VIEW,
-                        null
-                    ).let { layout ->
-                        with(SPKey) {
-                            when (layout) {
-                                SP_GRID_LAYOUT_RECICLER_VIEW -> {
-                                    radioButtonGridLayout.isChecked = true
-                                }
-                                SP_LINEAR_LAYOUT_RECYCLER_VIEW -> {
-                                    radioButtonLinearLayout.isChecked = true
-                                }
-                            }
-                        }
-                    }
-            }
-
-
-
-
-
-            dialog.show()
         }
     }
 }

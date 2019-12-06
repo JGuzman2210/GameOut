@@ -8,6 +8,10 @@
     android:fitsSystemWindows="true"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <TextView
+        android:id="@+id/textID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <include
         layout="@layout/app_bar_gameout"
         android:layout_width="match_parent"
